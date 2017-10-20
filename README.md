@@ -4,19 +4,16 @@ Add commands to certain items! The commands will be executed on tap as configure
 # How to setup
 First of all, install the plugin, restart server. Then go on config.yml, you'll find a starting guide there also. For making everything simple, here is another demo
 
-`"ItemID:Damage":
-  
-  name: "Item's name"
-  
-  lore:
-    - "Item's lore"
-    - "can add as much as you want"
-  
-  runAs: 0 # 0 - player, 1 - op, 2 - console
- 
+"ItemId:Damage":
+  name: "Your Item Name"
+  lore:
+    - "Some random text"
+    - "Another random text"
+  runAs: 0 # 0 - Player, 1 - OP, 2 - Console
   commands:
-    - "say this doesn't work because I don't have op!"
-    - "me But this works, I don't know why :P"`
-    
+    - "say Can't use say since I'm not op :["
+    - "me No one can stop me from using /me!"
+
+
  # Support
  Twitter: @TheAz928
