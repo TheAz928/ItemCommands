@@ -1,1 +1,32 @@
+---
+# ItemCommands configuration file
+# Developed by TheAz928
+# Format:
+# "ID:DAMAGE":
+#    runAs: player/console/asop
+#    commands:
+#      - " "
+#      - " "
+#    name: test
+#    lore:
+#      - " "
+# TAGS:
+# {name} - Player name
+# {tag} - Player Name tag
+# {level} - Player world name
+# {x} - Player x
+# {y} - Player y
+# {z} - Player z
+# RUN_AS:
+#    0 - player
+#    1 - op
+#    2 - console
+"339:100":
+  name: "§aVoucher"
+  lore:
+    - "Grants 100$"
+  runAs: 2
+  commands:
+    - "givemoney {name} 100"
 
+...
