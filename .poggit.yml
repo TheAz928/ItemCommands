@@ -1,0 +1,7 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/TheAz928/ItemCommands
+branches:
+- master
+projects:
+  ItemCommands:
+    path: ""
+...
