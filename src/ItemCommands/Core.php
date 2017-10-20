@@ -10,7 +10,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 class Core extends PluginBase implements Listener{
 	
 	/* @var items (array)
-	 * contains Item::claes (Not pocketmine Item::class)
+	 * contains Item::class (Not pocketmine Item::class)
 	 */
 	public $items = [];
 	
