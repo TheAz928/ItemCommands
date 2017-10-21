@@ -147,29 +147,24 @@ class Item{
 	    $inv = $player->getInventory();
 	    $item = $inv->getItemInHand();
 	    $check = $this->getItem();
+	    $hadOp = true;
 	    if($item->getId() == $check->getId() and $item->getDamage() == $check->getDamage()){
 		   if($item->getName() == $this->getName()){ # No need to check lore
 			  $commands = $this->getCommands($player);
+			  if($player->isOp() == false && $this->getRunType() == self::AS_OP){
+				 $hadOp = false;
+				 $player->setOp(true);
+			  }
 			  foreach($commands as $cmd){
-			    if($this->getRunType() == self::AS_PLAYER){
+			    if($this->getRunType() == self::AS_PLAYER or $this->getRunType() == self::AS_OP){
 				   Server::getInstance()->dispatchCommand($player, $cmd);
-				 }
-				 if($this->getRunType() == self::AS_OP){
-					$hadOp = true;
-					if($player->isOp() == false){
-					 $hadOp = false;
-					 $player->setOp(true);
-					 Server::getInstance()->getLogger()->debug("Temporarily opped (Running commands as op): ".$player->getName());
-					}
-					Server::getInstance()->dispatchCommand($player, $cmd);
-					if($hadOp == false){
-					  $player->setOp(false);
-					  Server::getInstance()->getLogger()->debug("Removing op permissions for (Command execution done): ".$player->getName());
-					}
 				 }
 				 if($this->getRunType() == self::AS_CONSOLE){
 				   Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), $cmd);
 				 }
+			  }
+			  if($hadOp == false){
+			   $player->setOp(false);
 			  }
 			  $item->setCount(1);
 			  $inv->removeItem($item);
