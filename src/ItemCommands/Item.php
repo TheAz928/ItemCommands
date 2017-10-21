@@ -155,13 +155,17 @@ class Item{
 				   Server::getInstance()->dispatchCommand($player, $cmd);
 				 }
 				 if($this->getRunType() == self::AS_OP){
-					if($player->isOp()){
-				     Server::getInstance()->dispatchCommand($player, $cmd);
-				   }else{
-					  $player->setOp(true);
-				     Server::getInstance()->dispatchCommand($player, $cmd);
-				     $player->setOp(false);
-				   }
+					$hadOp = true;
+					if($player->isOp() == false){
+					 $hadOp = false;
+					 $player->setOp(true);
+					 Server::getInstance()->getLogger()->debug("Temporarily opped (Running commands as op): ".$player->getName());
+					}
+					Server::getInstance()->dispatchCommand($player, $cmd);
+					if($hadOp == false){
+					  $player->setOp(false);
+					  Server::getInstance()->getLogger()->debug("Removing op permissions for (Command execution done): ".$player->getName());
+					}
 				 }
 				 if($this->getRunType() == self::AS_CONSOLE){
 				   Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), $cmd);
