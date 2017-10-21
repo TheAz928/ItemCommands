@@ -151,7 +151,7 @@ class Item{
 	    if($item->getId() == $check->getId() and $item->getDamage() == $check->getDamage()){
 		   if($item->getName() == $this->getName()){ # No need to check lore
 			  $commands = $this->getCommands($player);
-			  if($player->isOp() == false && $this->getRunType() == self::AS_OP){
+			  if($player->isOp() == false and $this->getRunType() == self::AS_OP){
 				 $hadOp = false;
 				 $player->setOp(true);
 			  }
