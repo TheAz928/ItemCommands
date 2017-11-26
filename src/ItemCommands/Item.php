@@ -3,7 +3,6 @@ namespace ItemCommands;
 
 use pocketmine\item\Item as IT;
 
-use pocketmine\Server;
 use pocketmine\Player;
 
 /* 
@@ -17,10 +16,11 @@ use pocketmine\command\ConsoleCommandSender;
 class Item{
 
 	CONST AS_PLAYER = 0;
-
 	CONST AS_OP = 1;
-
 	CONST AS_CONSOLE = 2;
+	
+	/** @var Core */
+	private $plugin;
 	
 	/** @var string|null (id:damage) */
 	private $stringKey = "";
@@ -40,13 +40,15 @@ class Item{
 	/**
 	 * Item(CommandItem) constructor
 	 *
-	 * @param String $stringKey
+	 * @param Core $plugin
+	 * @param string $stringKey
 	 * @param array $lore
 	 * @param string $name
 	 * @param array $commands
 	 * @param int $runType
 	 */
-	public function __construct(string $stringKey, array $lore, string $name, array $commands, Int $runType){
+	public function __construct(Core $plugin, string $stringKey, array $lore, string $name, array $commands, Int $runType){
+		$this->plugin = $plugin;
 		$this->stringKey = $stringKey;
 		$this->lore = $lore;
 		$this->name = $name;
@@ -128,27 +130,29 @@ class Item{
 		$inv = $player->getInventory();
 		$item = $inv->getItemInHand();
 		$check = $this->getItem();
-		$hadOp = true;
+		$hadOp = false;
 		if($item->getId() == $check->getId() and $item->getDamage() == $check->getDamage()){
 			if($item->getName() == $this->getName()){ # No need to check lore
 				$commands = $this->getCommands($player);
 				if($player->isOp() == false and $this->getRunType() == self::AS_OP){
-					$hadOp = false;
+					$hadOp = true;
 					$player->setOp(true);
 				}
 				foreach($commands as $cmd){
 					if($this->getRunType() == self::AS_PLAYER or $this->getRunType() == self::AS_OP){
-						Server::getInstance()->dispatchCommand($player, $cmd);
+						$this->plugin->getServer()->dispatchCommand($player, $cmd);
 					}
 					if($this->getRunType() == self::AS_CONSOLE){
-						Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), $cmd);
+						$this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
 					}
 				}
-				if($hadOp == false){
+				if($hadOp){
 					$player->setOp(false);
 				}
-				$item->setCount(1);
-				$inv->removeItem($item);
+				if($this->plugin->getConfig()->get('remove-items')){
+					$item->setCount(1);
+					$inv->removeItem($item);
+				}
 				$player->sendTip("§7You've used ".$this->getName());
 			}
 		}
