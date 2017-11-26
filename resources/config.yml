@@ -3,7 +3,8 @@
 # Developed by TheAz928
 
 # If the item should be removed after usage
-remove-items: true
+settings:
+  remove-items: true
 
 # Format:
 # "ID:DAMAGE":

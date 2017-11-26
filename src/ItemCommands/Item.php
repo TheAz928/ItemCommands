@@ -47,13 +47,13 @@ class Item{
 	 * @param array $commands
 	 * @param int $runType
 	 */
-	public function __construct(Core $plugin, string $stringKey, array $lore, string $name, array $commands, Int $runType){
+	public function __construct(Core $plugin, string $stringKey, array $lore, string $name, array $commands, int $runType){
 		$this->plugin = $plugin;
 		$this->stringKey = $stringKey;
 		$this->lore = $lore;
 		$this->name = $name;
 		$this->commands = $commands;
-		$this->runType = $runType > 2 or $runType < 0 ? 0 : $runType;
+		$this->runType = ($runType > 2 or $runType < 0) ? self::AS_PLAYER : $runType;
 	}
 	
 	/**
@@ -134,22 +134,22 @@ class Item{
 		if($item->getId() == $check->getId() and $item->getDamage() == $check->getDamage()){
 			if($item->getName() == $this->getName()){ # No need to check lore
 				$commands = $this->getCommands($player);
-				if($player->isOp() == false and $this->getRunType() == self::AS_OP){
+				if(!$player->isOp() and $this->runType == self::AS_OP){
 					$hadOp = true;
 					$player->setOp(true);
 				}
 				foreach($commands as $cmd){
-					if($this->getRunType() == self::AS_PLAYER or $this->getRunType() == self::AS_OP){
+					if($this->runType == self::AS_PLAYER or $this->runType == self::AS_OP){
 						$this->plugin->getServer()->dispatchCommand($player, $cmd);
 					}
-					if($this->getRunType() == self::AS_CONSOLE){
+					if($this->runType == self::AS_CONSOLE){
 						$this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $cmd);
 					}
 				}
 				if($hadOp){
 					$player->setOp(false);
 				}
-				if($this->plugin->getConfig()->get('remove-items')){
+				if($this->plugin->getConfig()->getNested('settings.remove-items')){
 					$item->setCount(1);
 					$inv->removeItem($item);
 				}
