@@ -1,6 +1,11 @@
 ---
 # ItemCommands configuration file
 # Developed by TheAz928
+
+# If the item should be removed after usage
+settings:
+  remove-items: true
+
 # Format:
 # "ID:DAMAGE":
 #    runAs: player/console/asop
@@ -28,5 +33,4 @@
   runAs: 2
   commands:
     - "givemoney {name} 100"
-
 ...
